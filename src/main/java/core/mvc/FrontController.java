@@ -64,4 +64,8 @@ public class FrontController extends HttpServlet {
 		
 		return forwardUrl;
 	}
+	
+	public static String getDefaultRedirectPrefix() {
+		return FrontController.DEFAULT_REDIRECT_PREFIX;
+	}
 }

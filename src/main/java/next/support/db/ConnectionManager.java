@@ -9,7 +9,8 @@ import org.apache.commons.dbcp.BasicDataSource;
 
 public class ConnectionManager {
 	private static final String DB_DRIVER = "org.h2.Driver";
-	private static final String DB_URL = "jdbc:h2:~/next-jwp";
+	//private static final String DB_URL = "jdbc:h2:~/next-jwp";
+	private static final String DB_URL = "jdbc:h2:~/next-jwp-131048";
 	private static final String DB_USERNAME = "sa";
 	private static final String DB_PW = "";
 	

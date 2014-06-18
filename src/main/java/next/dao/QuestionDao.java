@@ -86,15 +86,7 @@ public class QuestionDao {
 
 			return questions;
 		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (con != null) {
-				con.close();
-			}
+			closeAll(rs, pstmt, con);
 		}
 	}
 
@@ -116,15 +108,19 @@ public class QuestionDao {
 			
 			return null;
 		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (con != null) {
-				con.close();
-			}
+			closeAll(rs, pstmt, con);
+		}
+	}
+	
+	private void closeAll(ResultSet rs, PreparedStatement pstmt, Connection con) throws SQLException {
+		if (rs != null) {
+			rs.close();
+		}
+		if (pstmt != null) {
+			pstmt.close();
+		}
+		if (con != null) {
+			con.close();
 		}
 	}
 	

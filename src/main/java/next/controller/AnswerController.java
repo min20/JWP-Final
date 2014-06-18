@@ -10,11 +10,12 @@ import core.mvc.Controller;
 import core.mvc.FrontController;
 
 public class AnswerController implements Controller {
-	private AnswerDao answerDao = new AnswerDao();
-	private QuestionDao questionDao = new QuestionDao();
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		AnswerDao answerDao = new AnswerDao();
+		QuestionDao questionDao = new QuestionDao();
+
 		Long questionId = Long.parseLong(request.getParameter("questionId"));
 		Answer answer = new Answer(request.getParameter("writer"), request.getParameter("contents"), questionId);
 

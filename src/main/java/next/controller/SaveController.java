@@ -9,10 +9,11 @@ import core.mvc.Controller;
 import core.mvc.FrontController;
 
 public class SaveController implements Controller {
-	private QuestionDao questionDao = new QuestionDao();
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		QuestionDao questionDao = new QuestionDao();
+		
 		Question question =	new Question(
 				request.getParameter("writer"), request.getParameter("title"),
 				request.getParameter("contents"));

@@ -104,25 +104,17 @@ public class QuestionDao {
 		ResultSet rs = null;
 		try {
 			con = ConnectionManager.getConnection();
-			String sql = "SELECT questionId, writer, title, contents, createdDate, countOfComment FROM QUESTIONS " + 
-					"WHERE questionId = ?";
+			String sql = createQuery();
 			pstmt = con.prepareStatement(sql);
-			pstmt.setLong(1, questionId);
+			setValues(questionId, pstmt);
 
 			rs = pstmt.executeQuery();
 
-			Question question = null;
 			if (rs.next()) {
-				question = new Question(
-						rs.getLong("questionId"),
-						rs.getString("writer"),
-						rs.getString("title"),
-						rs.getString("contents"),
-						rs.getTimestamp("createdDate"),
-						rs.getInt("countOfComment"));
+				return mapRow(rs);
 			}
-
-			return question;
+			
+			return null;
 		} finally {
 			if (rs != null) {
 				rs.close();
@@ -134,5 +126,24 @@ public class QuestionDao {
 				con.close();
 			}
 		}
+	}
+	
+	private Question mapRow(ResultSet rs) throws SQLException {
+		return new Question (
+			rs.getLong("questionId"),
+			rs.getString("writer"),
+			rs.getString("title"),
+			rs.getString("contents"),
+			rs.getTimestamp("createdDate"),
+			rs.getInt("countOfComment"));
+	}
+
+	private void setValues(long questionId, PreparedStatement pstmt) throws SQLException {
+		pstmt.setLong(1, questionId);
+	}
+	
+	private String createQuery() {
+		return "SELECT questionId, writer, title, contents, createdDate, countOfComment FROM QUESTIONS "
+				+ "WHERE questionId = ?";
 	}
 }

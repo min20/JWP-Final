@@ -68,4 +68,8 @@ public class FrontController extends HttpServlet {
 	public static String getDefaultRedirectPrefix() {
 		return FrontController.DEFAULT_REDIRECT_PREFIX;
 	}
+	
+	public static String getDefaulApiPrefix() {
+		return FrontController.DEFAULT_API_PREFIX;
+	}
 }

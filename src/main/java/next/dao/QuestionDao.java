@@ -60,6 +60,7 @@ public class QuestionDao {
 	}
 
 	public List<Question> findAll() throws SQLException {
+		boolean doGetContents = false;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -74,13 +75,7 @@ public class QuestionDao {
 			List<Question> questions = new ArrayList<Question>();
 			Question question = null;
 			while (rs.next()) {
-				question = new Question(
-						rs.getLong("questionId"),
-						rs.getString("writer"),
-						rs.getString("title"),
-						null,
-						rs.getTimestamp("createdDate"),
-						rs.getInt("countOfComment"));
+				question = mapRow(rs, doGetContents);
 				questions.add(question);
 			}
 
@@ -91,19 +86,21 @@ public class QuestionDao {
 	}
 
 	public Question findById(long questionId) throws SQLException {
+		boolean doGetContents = true;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			con = ConnectionManager.getConnection();
-			String sql = createQuery();
+			String sql = "SELECT questionId, writer, title, contents, createdDate, countOfComment FROM QUESTIONS "
+					+ "WHERE questionId = ?";
 			pstmt = con.prepareStatement(sql);
 			setValues(questionId, pstmt);
 
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				return mapRow(rs);
+				return mapRow(rs, doGetContents);
 			}
 			
 			return null;
@@ -124,22 +121,22 @@ public class QuestionDao {
 		}
 	}
 	
-	private Question mapRow(ResultSet rs) throws SQLException {
+	private Question mapRow(ResultSet rs, boolean doGetContents) throws SQLException {
+		String contents = null;
+		if (doGetContents) {
+			contents = rs.getString("contents");
+		}
+		
 		return new Question (
 			rs.getLong("questionId"),
 			rs.getString("writer"),
 			rs.getString("title"),
-			rs.getString("contents"),
+			contents,
 			rs.getTimestamp("createdDate"),
 			rs.getInt("countOfComment"));
 	}
 
 	private void setValues(long questionId, PreparedStatement pstmt) throws SQLException {
 		pstmt.setLong(1, questionId);
-	}
-	
-	private String createQuery() {
-		return "SELECT questionId, writer, title, contents, createdDate, countOfComment FROM QUESTIONS "
-				+ "WHERE questionId = ?";
 	}
 }

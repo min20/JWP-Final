@@ -28,7 +28,7 @@ public class ListController implements Controller {
 		List<Question> questions = questionDao.findAll();
 		
 		if (request.getRequestURI().equals("/api/list.next")) {
-			out.println(gson.toJson(questions.toString()));
+			out.println(gson.toJson(questions));
 			return FrontController.getDefaulApiPrefix();
 		}
 		
